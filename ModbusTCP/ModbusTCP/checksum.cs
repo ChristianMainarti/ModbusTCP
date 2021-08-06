@@ -68,5 +68,22 @@ namespace ModbusTCP
                 return null;
             }
         }
+
+        public static bool CheckCRC(byte[]buffer, int data)
+        {
+            
+            return true;
+        }
+
+        public static bool CheckDataIntegrity(byte[] buffer, byte[] response)
+        {
+            if (response == null) return false;
+
+            if (buffer[0] == response[0] && buffer[1] == response[1])
+            {
+                return CheckCRC(response);
+            }
+            return false;
+        }
     }
 }
