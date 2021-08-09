@@ -19,11 +19,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ReadCoilStatus(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x01;
+            byte functionCode = 0x01;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -31,11 +31,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ReadInputStatus(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x02;
+            byte functionCode = 0x02;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -43,11 +43,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ReadHoldingRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x03;
+            byte functionCode = 0x03;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -55,11 +55,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ReadInputRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x04;
+            byte funcfunctionCodetion = 0x04;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -68,11 +68,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ForceSingleCoil(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x05;
+            byte functionCode = 0x05;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -80,11 +80,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> PresetSingleRegister(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x06;
+            byte functionCode = 0x06;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -92,11 +92,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ForceMultipleCoils(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x15;
+            byte functionCode = 0x15;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 
@@ -104,11 +104,11 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> PresetMultipleRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte function = 0x16;
+            byte functionCode = 0x16;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8*2;
 
-            byte[] buffer = {HighByte(addressSlave), function, LowByte(firstRegister), HighByte(firstRegister),
+            byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();
 

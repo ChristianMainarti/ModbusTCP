@@ -48,6 +48,22 @@ namespace ModbusTCP
             byte[] result = BitConverter.GetBytes(data);
             return result;
         }
+        public static string ByteArrayToHexString(byte[] buffer, bool wouldPrint = true)
+        {
+            StringBuilder sb = new StringBuilder(buffer.Length * 3);
+            foreach (byte b in buffer)
+            {
+                if (wouldPrint)
+                {
+                    sb.Append(Convert.ToString(b, 16).PadLeft(2, '0').PadRight(3, ' '));
+                }
+                else
+                {
+                    sb.Append(Convert.ToString(b, 16).PadLeft(2, '0'));
+                }
+            }
+            return sb.ToString().ToUpper();
+        }
         public static byte[] Calculate(byte[] buffer)
         {
             try
@@ -63,16 +79,34 @@ namespace ModbusTCP
             }
             catch (Exception e)
             {
-                Console.WriteLine("Erro no calculate");
+                Console.WriteLine("Erro no Calculate");
                 Console.WriteLine(e.Message);
                 return null;
             }
         }
 
-        public static bool CheckCRC(byte[]buffer, int data)
+        public static bool CheckCRC(byte[]buffer)
         {
             
-            return true;
+            try
+            {
+                byte[] bufferToBeVerify = new byte[buffer.Length - 2];
+
+                for (int i = 0; i < buffer.Length - 2; i++)
+                {
+                    bufferToBeVerify[i] = buffer[i];
+                }
+                byte[] checksum = new byte[] {buffer[^2], buffer[^1] };
+                var checkSumCalculated = Calculate(bufferToBeVerify);
+                return ByteArrayToHexString(checksum) == ByteArrayToHexString(checkSumCalculated);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Erro no CheckCRC");
+                return false;
+            }
+            
         }
 
         public static bool CheckDataIntegrity(byte[] buffer, byte[] response)
