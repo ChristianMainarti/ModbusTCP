@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ModbusTCP
 {
-    class TCPConnection
+    public class TCPConnection
     {
         private TcpClient tcpClient;
         private NetworkStream networkStream;
@@ -23,7 +24,7 @@ namespace ModbusTCP
         }
 
 
-        private bool StartConnection()
+        public bool StartConnection()
         {
             try
             {
@@ -52,16 +53,16 @@ namespace ModbusTCP
                     return tcpClient.Connected;
                 }
             }
-            catch
+            catch(Exception e)
             {
-                //
+                MessageBox.Show("Erro no Inicia Conexão", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return false;
         }
 
 
-        private byte[] WriteByte(byte[] buffer, int sizeBufferExpected)
+        public byte[] WriteByte(byte[] buffer, int sizeBufferExpected)
         {
             if (networkStream.CanWrite)
             {
@@ -73,7 +74,7 @@ namespace ModbusTCP
         }
 
 
-        private byte[] ReadByte(int sizeBufferExpected)
+        public byte[] ReadByte(int sizeBufferExpected)
         {
 
             byte[] response = new byte[] { };
@@ -83,7 +84,6 @@ namespace ModbusTCP
                 if (networkStream.Read(response, 0, sizeBufferExpected) == sizeBufferExpected)
                     return response;
             }
-
             return null;
         }
     }

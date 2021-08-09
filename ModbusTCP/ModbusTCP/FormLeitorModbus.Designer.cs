@@ -1,7 +1,7 @@
 ﻿
 namespace ModbusTCP
 {
-    partial class Form1
+    partial class FormLeitorModbus
     {
         /// <summary>
         ///  Required designer variable.
@@ -30,8 +30,10 @@ namespace ModbusTCP
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtIP = new System.Windows.Forms.TextBox();
             this.btnIniciaConexao = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnFC16 = new System.Windows.Forms.Button();
@@ -49,8 +51,10 @@ namespace ModbusTCP
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtPort);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.txtIP);
             this.groupBox1.Controls.Add(this.btnIniciaConexao);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
@@ -62,27 +66,45 @@ namespace ModbusTCP
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Iniciar Comunicação";
             // 
+            // txtPort
+            // 
+            this.txtPort.Location = new System.Drawing.Point(94, 54);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(132, 23);
+            this.txtPort.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 57);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(39, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Porta";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 43);
+            this.label1.Location = new System.Drawing.Point(8, 23);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Endereço IP";
             // 
-            // textBox1
+            // txtIP
             // 
-            this.textBox1.Location = new System.Drawing.Point(98, 40);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(132, 23);
-            this.textBox1.TabIndex = 1;
+            this.txtIP.Location = new System.Drawing.Point(94, 20);
+            this.txtIP.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(132, 23);
+            this.txtIP.TabIndex = 1;
             // 
             // btnIniciaConexao
             // 
-            this.btnIniciaConexao.Location = new System.Drawing.Point(235, 28);
+            this.btnIniciaConexao.Location = new System.Drawing.Point(363, 23);
             this.btnIniciaConexao.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.btnIniciaConexao.Name = "btnIniciaConexao";
             this.btnIniciaConexao.Size = new System.Drawing.Size(104, 45);
@@ -109,7 +131,6 @@ namespace ModbusTCP
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "I/O Dados";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
             // btnFC16
             // 
@@ -237,7 +258,7 @@ namespace ModbusTCP
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button btnIniciaConexao;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtIP;
         private System.Windows.Forms.Button btnFC05;
         private System.Windows.Forms.Button btnFC04;
         private System.Windows.Forms.Button btnFC03;
@@ -246,6 +267,8 @@ namespace ModbusTCP
         private System.Windows.Forms.Button btnFC16;
         private System.Windows.Forms.Button btnFC15;
         private System.Windows.Forms.Button btnFC06;
+        private System.Windows.Forms.TextBox txtPort;
+        private System.Windows.Forms.Label label2;
     }
 }
 

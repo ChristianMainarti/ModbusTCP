@@ -55,7 +55,7 @@ namespace ModbusTCP
         }
         public Tuple<byte[], int> ReadInputRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
-            byte funcfunctionCodetion = 0x04;
+            byte functionCode = 0x04;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 

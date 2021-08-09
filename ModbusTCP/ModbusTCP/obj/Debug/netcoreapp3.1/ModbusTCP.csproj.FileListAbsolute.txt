@@ -1,0 +1,15 @@
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.csproj.AssemblyReference.cache
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.csproj.GenerateResource.cache
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.AssemblyInfoInputs.cache
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.AssemblyInfo.cs
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.csproj.CoreCompileInputs.cache
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\bin\Debug\netcoreapp3.1\ModbusTCP.exe
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\bin\Debug\netcoreapp3.1\ModbusTCP.deps.json
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\bin\Debug\netcoreapp3.1\ModbusTCP.runtimeconfig.json
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\bin\Debug\netcoreapp3.1\ModbusTCP.runtimeconfig.dev.json
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\bin\Debug\netcoreapp3.1\ModbusTCP.dll
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\bin\Debug\netcoreapp3.1\ModbusTCP.pdb
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.FormLeitorModbus.resources
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.dll
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.pdb
+C:\Users\SAGATECH\source\repos\ModbusTCP\ModbusTCP\ModbusTCP\obj\Debug\netcoreapp3.1\ModbusTCP.genruntimeconfig.cache
