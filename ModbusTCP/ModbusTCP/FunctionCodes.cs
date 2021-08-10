@@ -42,7 +42,7 @@ namespace ModbusTCP
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
         public Tuple<byte[], int> ReadHoldingRegisters(int addressSlave, int firstRegister, int quantityRegister)
-        {
+            {
             byte functionCode = 0x03;
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
