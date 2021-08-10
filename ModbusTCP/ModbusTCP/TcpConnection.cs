@@ -93,15 +93,24 @@ namespace ModbusTCP
                 {
                     Console.WriteLine("networking com problemas");
                 }
-                if (networkStream.CanRead)                
+                if (networkStream.CanRead)
                     if (networkStream.Read(buffer, 0, sizeBufferExpected) == sizeBufferExpected)
-                        return buffer;                
+                        return buffer;             
             }
             catch (Exception)
             {
                 Console.WriteLine("readbyte com problemas");    
             }
             return null;
+        }
+
+        public bool StatusConnection() 
+        {
+            if (tcpClient!= null)
+            {
+                return tcpClient.Connected;
+            }
+            return false;
         }
     }
 }

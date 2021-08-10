@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace ModbusTCP
 {
-    
+
     public partial class FormLeitorModbus : Form
     {
         private int addressSlave;
@@ -13,6 +13,7 @@ namespace ModbusTCP
         private int portNumber;
         private string ipAddressServer;
         private byte[] buffer;
+        private TCPConnection tcpConnection;
         public FormLeitorModbus()
         {
             
@@ -21,7 +22,7 @@ namespace ModbusTCP
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void btnIniciaConexao_Click(object sender, EventArgs e)
@@ -30,17 +31,18 @@ namespace ModbusTCP
             {
                 string _ipAddressServer = txtIP.Text;
                 int _portNumber = Convert.ToInt32(txtPort.Text);
+
                 if (_ipAddressServer == null)
                 {
                     Console.WriteLine("Entre com o IP antes de iniciar a Conexão");
                 }
                 else
                 {
-                    TCPConnection tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
                     tcpConnection.StartConnection();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 MessageBox.Show("Erro no Inicia Conexão","", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.WriteLine("Erro na chamada do form");
@@ -49,75 +51,133 @@ namespace ModbusTCP
         }
         private void btnFC01_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.ReadByte(sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.ReadCoilStatus(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadCoilStatus(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
         }
         private void btnFC02_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.ReadByte(sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.ReadInputStatus(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputStatus(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
         }
         private void btnFC03_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.ReadByte(sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
+            
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response!=null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
+
         }
         private void btnFC04_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.ReadByte(sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.ReadInputRegisters(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputRegisters(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
         }
         private void btnFC05_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.WriteByte(buffer, sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.ForceSingleCoil(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceSingleCoil(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }       
         }
         private void btnFC06_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.WriteByte(buffer, sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.PresetSingleRegister(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetSingleRegister(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
         }
         private void btnFC15_Click(object sender, EventArgs e)
         {
-            var tcpConn = new TCPConnection(ipAddressServer, portNumber);
-            tcpConn.WriteByte(buffer, sizeBufferExpected);
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.ForceMultipleCoils(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceMultipleCoils(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
 
         }
         private void btnFC16_Click(object sender, EventArgs e)
         {
-            int sizeBufferExpected;
-            string _ipAddressServer = txtIP.Text;
-            int _portNumber = Convert.ToInt32(txtPort.Text);
-            var functionCode = new FunctionCodes();
-            functionCode.PresetMultipleRegisters(addressSlave, firstRegister, quantityRegister);
+            if (!tcpConnection.StatusConnection())
+            {
+                string _ipAddressServer = txtIP.Text;
+                int _portNumber = Convert.ToInt32(txtPort.Text);
+                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+            }
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetMultipleRegisters(addressSlave, firstRegister, quantityRegister);
+
+            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            if (response != null)
+            {
+                Console.WriteLine(String.Join(",", response));
+            }
         }
     }
 }
