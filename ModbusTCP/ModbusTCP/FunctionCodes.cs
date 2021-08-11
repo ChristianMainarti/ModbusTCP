@@ -44,10 +44,10 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ReadHoldingRegisters(int addressSlave, int firstRegister, int quantityRegister)
             {
             byte functionCode = 0x03;
-
-            int numberBytesToRead = (quantityRegister / 8);
+            quantityRegister = 16;
+            int numberBytesToRead = quantityRegister / 8;
             int sizeBufferExpected = 8;
-
+            //ainda não ta lendo o ID e os registradores
             byte[] buffer = {LowByte(addressSlave), functionCode, HighByte(firstRegister), LowByte(firstRegister),
             HighByte(quantityRegister),LowByte(quantityRegister)};
             byte[] response = buffer.ToList().Concat(CheckSum.Calculate(buffer).ToList()).ToArray();

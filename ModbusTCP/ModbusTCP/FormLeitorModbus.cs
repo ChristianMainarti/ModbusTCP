@@ -90,7 +90,7 @@ namespace ModbusTCP
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
             (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
-            
+            // talvez o erro esteja aq
             byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
             if (response!=null)
             {

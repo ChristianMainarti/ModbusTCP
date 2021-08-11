@@ -83,7 +83,7 @@ namespace ModbusTCP
             return null;
         }
 
-
+        // tem algo errado no read bytes ainda
         public byte[] ReadByte(int sizeBufferExpected)
         {
             try
