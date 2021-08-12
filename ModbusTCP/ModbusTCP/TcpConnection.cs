@@ -69,39 +69,49 @@ namespace ModbusTCP
                 {
                     Console.WriteLine("networkstream com problemas");
                 }
+
                 if (networkStream.CanWrite)
                 {
+                
                     networkStream.Write(buffer, 0, buffer.Length);
+                    // ao retornar o  read byte o buffer está como null
                     return ReadByte(sizeBufferExpected);
                 }
-                return null;
+                
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("Write byte com problema");
+                Console.WriteLine("Write byte com problema " + e.Message);
             }
-            return null;
+            return buffer;
         }
 
         // tem algo errado no read bytes ainda
         public byte[] ReadByte(int sizeBufferExpected)
         {
+            // o erro deve estar aqui
+            byte[] buffer = new byte[sizeBufferExpected];
+
             try
             {
-                byte[] buffer = new byte[] { };
                 if (networkStream == null)
                 {
                     Console.WriteLine("networking com problemas");
                 }
                 if (networkStream.CanRead)
+                {   // buffer recebendo 0
                     if (networkStream.Read(buffer, 0, sizeBufferExpected) == sizeBufferExpected)
-                        return buffer;             
+                    {
+                        return buffer;
+                    }
+                }         
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Console.WriteLine("readbyte com problemas");    
+                Console.WriteLine("Readbyte com problema " + e.Message);
+                return null;
             }
-            return null;
+            return buffer;
         }
 
         public bool StatusConnection() 

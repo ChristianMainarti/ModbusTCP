@@ -91,6 +91,7 @@ namespace ModbusTCP
             }
             (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
             // talvez o erro esteja aq
+            //writebyte nao ta escrevendo o buffer no response
             byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
             if (response!=null)
             {
