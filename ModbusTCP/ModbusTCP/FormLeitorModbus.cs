@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModbusTCP.Requisitions;
+using System;
 using System.Windows.Forms;
 
 namespace ModbusTCP
@@ -13,16 +14,17 @@ namespace ModbusTCP
         private int portNumber;
         private string ipAddressServer;
         private byte[] buffer;
+        private RequestStandardModbus requestsStandardModbus;
         private TCPConnection tcpConnection;
         public FormLeitorModbus()
         {
-            
+
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnIniciaConexao_Click(object sender, EventArgs e)
@@ -41,13 +43,14 @@ namespace ModbusTCP
                     tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
                     tcpConnection.StartConnection();
                 }
+
             }
             catch (Exception)
             {
-                MessageBox.Show("Erro no Inicia Conexão","", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erro no Inicia Conexão", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Console.WriteLine("Erro na chamada do form");
             }
-            
+
         }
         private void btnFC01_Click(object sender, EventArgs e)
         {
@@ -83,21 +86,32 @@ namespace ModbusTCP
         }
         private void btnFC03_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
-            }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
-            // talvez o erro esteja aq
-            //writebyte nao ta escrevendo o buffer no response
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
-            if (response!=null)
-            {
-                Console.WriteLine(String.Join(",", response));
-            }
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
 
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+            }
         }
         private void btnFC04_Click(object sender, EventArgs e)
         {
@@ -129,7 +143,7 @@ namespace ModbusTCP
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
-            }       
+            }
         }
         private void btnFC06_Click(object sender, EventArgs e)
         {

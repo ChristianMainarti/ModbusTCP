@@ -45,8 +45,10 @@ namespace ModbusTCP
             this.btnFC02 = new System.Windows.Forms.Button();
             this.btnFC01 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.txtbLeituras = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -222,6 +224,7 @@ namespace ModbusTCP
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.txtbLeituras);
             this.groupBox3.Location = new System.Drawing.Point(0, 279);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.groupBox3.Name = "groupBox3";
@@ -231,7 +234,15 @@ namespace ModbusTCP
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Leituras";
             // 
-            // Form1
+            // txtbLeituras
+            // 
+            this.txtbLeituras.Location = new System.Drawing.Point(12, 21);
+            this.txtbLeituras.Multiline = true;
+            this.txtbLeituras.Name = "txtbLeituras";
+            this.txtbLeituras.Size = new System.Drawing.Size(776, 280);
+            this.txtbLeituras.TabIndex = 0;
+            // 
+            // FormLeitorModbus
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -241,12 +252,14 @@ namespace ModbusTCP
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Microsoft YaHei", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.Name = "Form1";
+            this.Name = "FormLeitorModbus";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -269,6 +282,7 @@ namespace ModbusTCP
         private System.Windows.Forms.Button btnFC06;
         private System.Windows.Forms.TextBox txtPort;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtbLeituras;
     }
 }
 

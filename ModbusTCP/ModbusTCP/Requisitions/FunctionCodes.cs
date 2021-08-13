@@ -107,7 +107,7 @@ namespace ModbusTCP
         {
             byte functionCode = 0x10;
             int numberBytesToRead = (quantityRegister / 8);
-            int sizeBufferExpected = 8*2;
+            int sizeBufferExpected = 8 * 2;
 
             byte[] buffer = {HighByte(addressSlave), functionCode, LowByte(firstRegister), HighByte(firstRegister),
             LowByte(quantityRegister),HighByte(quantityRegister)};

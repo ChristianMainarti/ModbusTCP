@@ -12,13 +12,13 @@ namespace ModbusTCP
         public NetworkStream networkStream;
 
         private int portNumber;
-        private string ipAddressServer;
+        private System.Net.IPAddress ipAddressServer;
 
 
         public TCPConnection(string _ipAddressServer, int _portNumber)
         {
             portNumber = _portNumber;
-            ipAddressServer = _ipAddressServer;
+            ipAddressServer = System.Net.IPAddress.Parse(_ipAddressServer);
 
             tcpClient = new TcpClient();
         }
@@ -51,7 +51,7 @@ namespace ModbusTCP
                     return tcpClient.Connected;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 MessageBox.Show("Erro no Inicia Conexão", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -72,12 +72,11 @@ namespace ModbusTCP
 
                 if (networkStream.CanWrite)
                 {
-                
+
                     networkStream.Write(buffer, 0, buffer.Length);
                     // ao retornar o  read byte o buffer está como null
                     return ReadByte(sizeBufferExpected);
                 }
-                
             }
             catch (Exception e)
             {
@@ -89,8 +88,8 @@ namespace ModbusTCP
         // tem algo errado no read bytes ainda
         public byte[] ReadByte(int sizeBufferExpected)
         {
-            // o erro deve estar aqui
             byte[] buffer = new byte[sizeBufferExpected];
+            // o erro deve estar aqui
 
             try
             {
@@ -99,12 +98,18 @@ namespace ModbusTCP
                     Console.WriteLine("networking com problemas");
                 }
                 if (networkStream.CanRead)
-                {   // buffer recebendo 0
+                {   
+                // buffer recebendo 0
+                //System.IO.IOException
                     if (networkStream.Read(buffer, 0, sizeBufferExpected) == sizeBufferExpected)
                     {
                         return buffer;
                     }
-                }         
+                    else
+                    {
+                        buffer = null;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -114,9 +119,9 @@ namespace ModbusTCP
             return buffer;
         }
 
-        public bool StatusConnection() 
+        public bool StatusConnection()
         {
-            if (tcpClient!= null)
+            if (tcpClient != null)
             {
                 return tcpClient.Connected;
             }
