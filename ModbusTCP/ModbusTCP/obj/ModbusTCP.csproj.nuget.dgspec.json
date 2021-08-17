@@ -44,6 +44,12 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "System.Net.Sockets": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

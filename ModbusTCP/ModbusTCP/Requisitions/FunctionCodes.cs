@@ -20,6 +20,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ReadCoilStatus(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x01;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
@@ -32,6 +33,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ReadInputStatus(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x02;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
@@ -44,7 +46,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ReadHoldingRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x03;
-            quantityRegister = 16;
+
             int numberBytesToRead = quantityRegister / 8;
             int sizeBufferExpected = 8;
             //ainda não ta lendo o ID e os registradores
@@ -57,6 +59,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ReadInputRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x04;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
@@ -70,6 +73,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ForceSingleCoil(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x05;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
@@ -82,6 +86,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> PresetSingleRegister(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x06;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
@@ -94,6 +99,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> ForceMultipleCoils(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x0F;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8;
 
@@ -106,6 +112,7 @@ namespace ModbusTCP
         static public Tuple<byte[], int> PresetMultipleRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x10;
+
             int numberBytesToRead = (quantityRegister / 8);
             int sizeBufferExpected = 8 * 2;
 

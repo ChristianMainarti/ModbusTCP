@@ -12,15 +12,14 @@ namespace ModbusTCP
         public NetworkStream networkStream;
 
         private int portNumber;
-        private System.Net.IPAddress ipAddressServer;
+        private string ipAddressServer;
 
 
         public TCPConnection(string _ipAddressServer, int _portNumber)
         {
-            portNumber = _portNumber;
-            ipAddressServer = System.Net.IPAddress.Parse(_ipAddressServer);
 
-            tcpClient = new TcpClient();
+            portNumber = _portNumber;
+            ipAddressServer = _ipAddressServer;
         }
 
 
@@ -30,12 +29,15 @@ namespace ModbusTCP
             {
                 if (tcpClient.Connected)
                 {
-                    tcpClient.Close();
                     networkStream = null;
+                    tcpClient.Close();
                 }
 
                 tcpClient = new TcpClient();
                 tcpClient.Connect(ipAddressServer, portNumber);
+
+                tcpClient.ReceiveTimeout = 2500;
+                tcpClient.SendTimeout = 1000;
 
                 if (tcpClient.Connected)
                 {
@@ -46,8 +48,9 @@ namespace ModbusTCP
                     //Para 30 bytes (pior caso) => 25ms * 3,5 => 87,5ms
                     //Tempo de leitura = 3,5 * 87,5 => 306,5ms 
 
-                    networkStream.WriteTimeout = 2500;
-                    networkStream.ReadTimeout = 7000;
+                    networkStream.WriteTimeout = 1000;
+                    networkStream.ReadTimeout = 2500;
+
                     return tcpClient.Connected;
                 }
             }
@@ -61,28 +64,55 @@ namespace ModbusTCP
         }
 
 
-        public byte[] WriteByte(byte[] buffer, int sizeBufferExpected)
+        public bool StatusConnection()
         {
+            if (tcpClient != null)
+            {
+                return tcpClient.Connected;
+            }
+
+            return false;
+        }
+
+
+        public void CloseConnection()
+        {
+            if (tcpClient != null && tcpClient.Connected)
+            {
+                networkStream.Close();
+                tcpClient.Close();
+            }
+        }
+
+
+        public byte[] WriteByte(byte[] dataToSend, int sizeBufferExpected)
+        {
+            byte[] buffer = new byte[sizeBufferExpected];
+
             try
             {
-                if (networkStream == null)
-                {
-                    Console.WriteLine("networkstream com problemas");
-                }
+                if (tcpClient == null)
+                    StartConnection();
 
-                if (networkStream.CanWrite)
+                if (StatusConnection())
                 {
-
-                    networkStream.Write(buffer, 0, buffer.Length);
-                    // ao retornar o  read byte o buffer está como null
-                    return ReadByte(sizeBufferExpected);
+                    if (networkStream.CanWrite)
+                    {
+                        networkStream.Write(buffer, 0, sizeBufferExpected);
+                        return ReadByte(sizeBufferExpected);
+                    }
+                    else
+                    {
+                        networkStream.Close();
+                        tcpClient.Close();
+                    }
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Write byte com problema " + e.Message);
+                Console.WriteLine(e.Message);
             }
-            return buffer;
+            return null;
         }
 
         // tem algo errado no read bytes ainda
@@ -90,42 +120,29 @@ namespace ModbusTCP
         {
             byte[] buffer = new byte[sizeBufferExpected];
             // o erro deve estar aqui
-
             try
             {
-                if (networkStream == null)
-                {
-                    Console.WriteLine("networking com problemas");
-                }
                 if (networkStream.CanRead)
-                {   
-                // buffer recebendo 0
-                //System.IO.IOException
+                {
+                    // buffer recebendo 0
+                    //System.IO.IOException
                     if (networkStream.Read(buffer, 0, sizeBufferExpected) == sizeBufferExpected)
-                    {
                         return buffer;
-                    }
                     else
-                    {
                         buffer = null;
-                    }
+                }
+                else
+                {
+                    networkStream.Close();
+                    tcpClient.Close();
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine("Readbyte com problema " + e.Message);
-                return null;
             }
-            return buffer;
-        }
 
-        public bool StatusConnection()
-        {
-            if (tcpClient != null)
-            {
-                return tcpClient.Connected;
-            }
-            return false;
+            return buffer;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Net.Sockets;
 
 namespace ModbusTCP.Requisitions
 {
@@ -13,11 +15,11 @@ namespace ModbusTCP.Requisitions
 
         public RequestStandardModbus(TCPConnection _tcpConnection)
         {
-            countAttempts = 30;
+            countAttempts = 5;
             tcpConnection = _tcpConnection;
         }
 
-        public byte[] SendGenericRequestModbus(byte[] buffer, int sizeBufferExpected) 
+        public byte[] SendGenericRequestModbus(byte[] buffer, int sizeBufferExpected)
         {
             try
             {
@@ -30,7 +32,11 @@ namespace ModbusTCP.Requisitions
                     for (int i = 0; i < countAttempts; i++)
                     {
                         response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
-                        if(CheckSum.CheckDataIntegrity(buffer,response))
+
+                        if (response == null)
+                            continue;
+
+                        if (CheckSum.CheckDataIntegrity(buffer, response))
                         {
                             Console.WriteLine($"Request received: {String.Join(", ", response.ToList())}");
                             return response;
@@ -39,18 +45,19 @@ namespace ModbusTCP.Requisitions
                         {
                             response = null;
                         }
-                        if(response == null)
-                            continue;
-                    }                    
+                    }
                 }
                 else
                 {
-                    throw new Exception("ConnectionNoStartedOrLostedException");
+                    tcpConnection.StartConnection();
+
+                    if (!tcpConnection.StatusConnection())
+                        throw new Exception("ConnectionNoStartedOrLostedException");
                 }
             }
-            catch(Exception ex)
+            catch (IOException ex)
             {
-                throw new Exception(ex.Message);
+                Console.WriteLine(ex.ToString());
             }
             return null;
         }

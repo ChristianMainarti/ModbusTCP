@@ -1,6 +1,7 @@
 ﻿using ModbusTCP.Requisitions;
 using System;
 using System.Windows.Forms;
+using System.Net.Sockets;
 
 namespace ModbusTCP
 {
@@ -24,13 +25,17 @@ namespace ModbusTCP
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            btnFC01.Enabled = false;
         }
 
         private void btnIniciaConexao_Click(object sender, EventArgs e)
         {
             try
             {
+                //if ()
+                //{
+
+                //}
                 string _ipAddressServer = txtIP.Text;
                 int _portNumber = Convert.ToInt32(txtPort.Text);
 
@@ -42,6 +47,12 @@ namespace ModbusTCP
                 {
                     tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
                     tcpConnection.StartConnection();
+
+
+                    if (!tcpConnection.StatusConnection())
+                        throw new Exception();
+
+                    requestsStandardModbus = new RequestStandardModbus(tcpConnection);
                 }
 
             }
@@ -54,18 +65,20 @@ namespace ModbusTCP
         }
         private void btnFC01_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            if (tcpConnection.StatusConnection())
             {
                 string _ipAddressServer = txtIP.Text;
                 int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
-            }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadCoilStatus(addressSlave, firstRegister, quantityRegister);
 
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
-            if (response != null)
-            {
-                Console.WriteLine(String.Join(",", response));
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadCoilStatus(addressSlave, firstRegister, quantityRegister);
+
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(",", response));
+                }
             }
         }
         private void btnFC02_Click(object sender, EventArgs e)
@@ -76,9 +89,11 @@ namespace ModbusTCP
                 int _portNumber = Convert.ToInt32(txtPort.Text);
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputStatus(addressSlave, firstRegister, quantityRegister);
 
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputStatus(addressSlave, firstRegister, quantityRegister);
+            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
@@ -94,10 +109,11 @@ namespace ModbusTCP
                     int _portNumber = Convert.ToInt32(txtPort.Text);
                     tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
                 }
-                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
 
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadHoldingRegisters(addressSlave, firstRegister, quantityRegister);
                 requestsStandardModbus = new RequestStandardModbus(tcpConnection);
                 byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
                 if (response != null)
                 {
                     Console.WriteLine(String.Join(", ", response));
@@ -122,8 +138,8 @@ namespace ModbusTCP
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
             (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputRegisters(addressSlave, firstRegister, quantityRegister);
-
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
@@ -137,9 +153,11 @@ namespace ModbusTCP
                 int _portNumber = Convert.ToInt32(txtPort.Text);
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceSingleCoil(addressSlave, firstRegister, quantityRegister);
 
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceSingleCoil(addressSlave, firstRegister, quantityRegister);
+            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
@@ -153,9 +171,11 @@ namespace ModbusTCP
                 int _portNumber = Convert.ToInt32(txtPort.Text);
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetSingleRegister(addressSlave, firstRegister, quantityRegister);
 
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetSingleRegister(addressSlave, firstRegister, quantityRegister);
+            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
@@ -169,9 +189,11 @@ namespace ModbusTCP
                 int _portNumber = Convert.ToInt32(txtPort.Text);
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceMultipleCoils(addressSlave, firstRegister, quantityRegister);
 
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceMultipleCoils(addressSlave, firstRegister, quantityRegister);
+            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
@@ -186,9 +208,11 @@ namespace ModbusTCP
                 int _portNumber = Convert.ToInt32(txtPort.Text);
                 tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
             }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetMultipleRegisters(addressSlave, firstRegister, quantityRegister);
 
-            byte[] response = tcpConnection.WriteByte(buffer, sizeBufferExpected);
+            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetMultipleRegisters(addressSlave, firstRegister, quantityRegister);
+            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
             if (response != null)
             {
                 Console.WriteLine(String.Join(",", response));
