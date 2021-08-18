@@ -27,7 +27,7 @@ namespace ModbusTCP
         {
             try
             {
-                if (tcpClient==null)
+                if (tcpClient == null)
                 {
                     networkStream = null;
                 }
@@ -82,9 +82,8 @@ namespace ModbusTCP
 
         public void CloseConnection()
         {
-            if (tcpClient != null && tcpClient.Connected)
+            if (tcpClient.Connected)
             {
-                networkStream.Close();
                 tcpClient.Close();
             }
         }
@@ -147,7 +146,6 @@ namespace ModbusTCP
             {
                 Console.WriteLine("Readbyte com problema " + e.Message);
             }
-
             return buffer;
         }
     }

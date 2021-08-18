@@ -17,11 +17,13 @@ namespace ModbusTCP
         private byte[] buffer;
         private RequestStandardModbus requestsStandardModbus;
         private TCPConnection tcpConnection;
+
         public FormLeitorModbus()
         {
 
             InitializeComponent();
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -38,15 +40,22 @@ namespace ModbusTCP
             }
         }
 
+
         private void btnIniciaConexao_Click(object sender, EventArgs e)
         {
             try
             {
                 if (btnIniciaConexao.Text == "Fecha Conexão")
                 {
-                    txtIP.Enabled = true;
-                    txtPort.Enabled = true;
-                    btnIniciaConexao.Text = "Inicia Conexão";
+                    tcpConnection.CloseConnection();
+                    if (tcpConnection.StatusConnection())
+                        MessageBox.Show("Conexão ainda em atividade", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else
+                    {
+                        btnIniciaConexao.Text = "Inicia Conexão";
+                        txtIP.Enabled = true;
+                        txtPort.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -54,9 +63,7 @@ namespace ModbusTCP
                     int _portNumber = Convert.ToInt32(txtPort.Text);
 
                     if (_ipAddressServer == null)
-                    {
                         Console.WriteLine("Entre com o IP antes de iniciar a Conexão");
-                    }
                     else
                     {
                         tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
@@ -88,42 +95,72 @@ namespace ModbusTCP
             }
 
         }
+
+
         private void btnFC01_Click(object sender, EventArgs e)
         {
-            if (tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
 
                 (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadCoilStatus(addressSlave, firstRegister, quantityRegister);
-
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
                 byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
 
                 if (response != null)
                 {
-                    Console.WriteLine(String.Join(",", response));
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}");
+            }
         }
+
+
         private void btnFC02_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputStatus(addressSlave, firstRegister, quantityRegister);
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputStatus(addressSlave, firstRegister, quantityRegister);
-            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
-            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
-
-            if (response != null)
+            catch (Exception ex)
             {
-                Console.WriteLine(String.Join(",", response));
+                Console.WriteLine($"{ex.Message}");
             }
         }
+
+
         private void btnFC03_Click(object sender, EventArgs e)
         {
             try
@@ -154,93 +191,164 @@ namespace ModbusTCP
                 Console.WriteLine($"{ex.Message}");
             }
         }
+
+
         private void btnFC04_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputRegisters(addressSlave, firstRegister, quantityRegister);
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ReadInputRegisters(addressSlave, firstRegister, quantityRegister);
-            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
-            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
-            if (response != null)
+            catch (Exception ex)
             {
-                Console.WriteLine(String.Join(",", response));
+                Console.WriteLine($"{ex.Message}");
             }
         }
+
+
         private void btnFC05_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceSingleCoil(addressSlave, firstRegister, quantityRegister);
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceSingleCoil(addressSlave, firstRegister, quantityRegister);
-            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
-            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
-
-            if (response != null)
+            catch (Exception ex)
             {
-                Console.WriteLine(String.Join(",", response));
+                Console.WriteLine($"{ex.Message}");
             }
         }
+
+
         private void btnFC06_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetSingleRegister(addressSlave, firstRegister, quantityRegister);
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetSingleRegister(addressSlave, firstRegister, quantityRegister);
-            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
-            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
-
-            if (response != null)
+            catch (Exception ex)
             {
-                Console.WriteLine(String.Join(",", response));
+                Console.WriteLine($"{ex.Message}");
             }
         }
+
+
         private void btnFC15_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceMultipleCoils(addressSlave, firstRegister, quantityRegister);
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.ForceMultipleCoils(addressSlave, firstRegister, quantityRegister);
-            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
-            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
-
-            if (response != null)
+            catch (Exception ex)
             {
-                Console.WriteLine(String.Join(",", response));
+                Console.WriteLine($"{ex.Message}");
             }
-
         }
+
+
         private void btnFC16_Click(object sender, EventArgs e)
         {
-            if (!tcpConnection.StatusConnection())
+            try
             {
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-                tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                if (!tcpConnection.StatusConnection())
+                {
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                }
+
+                (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetMultipleRegisters(addressSlave, firstRegister, quantityRegister);
+                requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
+
+                if (response != null)
+                {
+                    Console.WriteLine(String.Join(", ", response));
+                    txtbLeituras.Text = String.Join(", ", response);
+                }
+                else
+                {
+                    MessageBox.Show("A leitura não pode ser realizada!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            (byte[] buffer, int sizeBufferExpected) = FunctionCodes.PresetMultipleRegisters(addressSlave, firstRegister, quantityRegister);
-            requestsStandardModbus = new RequestStandardModbus(tcpConnection);
-            byte[] response = requestsStandardModbus.SendGenericRequestModbus(buffer, sizeBufferExpected);
-
-            if (response != null)
+            catch (Exception ex)
             {
-                Console.WriteLine(String.Join(",", response));
+                Console.WriteLine($"{ex.Message}");
             }
         }
     }

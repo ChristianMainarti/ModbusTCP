@@ -17,7 +17,9 @@ namespace ModbusTCP
         {
             return (byte)(value & 0xFF);
         }
-        static public Tuple<byte[], int> ReadCoilStatus(int addressSlave, int firstRegister, int quantityRegister)
+
+
+        public static Tuple<byte[], int> ReadCoilStatus(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x01;
 
@@ -30,7 +32,9 @@ namespace ModbusTCP
 
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
-        static public Tuple<byte[], int> ReadInputStatus(int addressSlave, int firstRegister, int quantityRegister)
+
+
+        public static Tuple<byte[], int> ReadInputStatus(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x02;
 
@@ -43,7 +47,9 @@ namespace ModbusTCP
 
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
-        static public Tuple<byte[], int> ReadHoldingRegisters(int addressSlave, int firstRegister, int quantityRegister)
+
+
+        public static Tuple<byte[], int> ReadHoldingRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x03;
 
@@ -56,7 +62,9 @@ namespace ModbusTCP
 
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
-        static public Tuple<byte[], int> ReadInputRegisters(int addressSlave, int firstRegister, int quantityRegister)
+
+
+        public static Tuple<byte[], int> ReadInputRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x04;
 
@@ -70,7 +78,9 @@ namespace ModbusTCP
             return new Tuple<byte[], int>(response, sizeBufferExpected);
 
         }
-        static public Tuple<byte[], int> ForceSingleCoil(int addressSlave, int firstRegister, int quantityRegister)
+
+
+         public static Tuple<byte[], int> ForceSingleCoil(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x05;
 
@@ -83,7 +93,9 @@ namespace ModbusTCP
 
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
-        static public Tuple<byte[], int> PresetSingleRegister(int addressSlave, int firstRegister, int quantityRegister)
+
+
+         public static Tuple<byte[], int> PresetSingleRegister(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x06;
 
@@ -96,7 +108,9 @@ namespace ModbusTCP
 
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
-        static public Tuple<byte[], int> ForceMultipleCoils(int addressSlave, int firstRegister, int quantityRegister)
+
+
+         public static Tuple<byte[], int> ForceMultipleCoils(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x0F;
 
@@ -109,7 +123,9 @@ namespace ModbusTCP
 
             return new Tuple<byte[], int>(response, sizeBufferExpected);
         }
-        static public Tuple<byte[], int> PresetMultipleRegisters(int addressSlave, int firstRegister, int quantityRegister)
+
+
+         public static Tuple<byte[], int> PresetMultipleRegisters(int addressSlave, int firstRegister, int quantityRegister)
         {
             byte functionCode = 0x10;
 
