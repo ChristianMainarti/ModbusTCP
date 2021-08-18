@@ -25,36 +25,61 @@ namespace ModbusTCP
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            btnFC01.Enabled = false;
+            if (tcpConnection == null)
+            {
+                btnFC01.Enabled = false;
+                btnFC02.Enabled = false;
+                btnFC03.Enabled = false;
+                btnFC04.Enabled = false;
+                btnFC05.Enabled = false;
+                btnFC06.Enabled = false;
+                btnFC15.Enabled = false;
+                btnFC16.Enabled = false;
+            }
         }
 
         private void btnIniciaConexao_Click(object sender, EventArgs e)
         {
             try
             {
-                //if ()
-                //{
-
-                //}
-                string _ipAddressServer = txtIP.Text;
-                int _portNumber = Convert.ToInt32(txtPort.Text);
-
-                if (_ipAddressServer == null)
+                if (btnIniciaConexao.Text == "Fecha Conexão")
                 {
-                    Console.WriteLine("Entre com o IP antes de iniciar a Conexão");
+                    txtIP.Enabled = true;
+                    txtPort.Enabled = true;
+                    btnIniciaConexao.Text = "Inicia Conexão";
                 }
                 else
                 {
-                    tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
-                    tcpConnection.StartConnection();
+                    string _ipAddressServer = txtIP.Text;
+                    int _portNumber = Convert.ToInt32(txtPort.Text);
+
+                    if (_ipAddressServer == null)
+                    {
+                        Console.WriteLine("Entre com o IP antes de iniciar a Conexão");
+                    }
+                    else
+                    {
+                        tcpConnection = new TCPConnection(_ipAddressServer, _portNumber);
+                        tcpConnection.StartConnection();
 
 
-                    if (!tcpConnection.StatusConnection())
-                        throw new Exception();
+                        if (!tcpConnection.StatusConnection())
+                            throw new Exception();
 
-                    requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                        requestsStandardModbus = new RequestStandardModbus(tcpConnection);
+                        btnFC01.Enabled = true;
+                        btnFC02.Enabled = true;
+                        btnFC03.Enabled = true;
+                        btnFC04.Enabled = true;
+                        btnFC05.Enabled = true;
+                        btnFC06.Enabled = true;
+                        btnFC15.Enabled = true;
+                        btnFC16.Enabled = true;
+                        txtIP.Enabled = false;
+                        txtPort.Enabled = false;
+                        btnIniciaConexao.Text = "Fecha Conexão";
+                    }
                 }
-
             }
             catch (Exception)
             {

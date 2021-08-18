@@ -42,9 +42,7 @@ namespace ModbusTCP.Requisitions
                             return response;
                         }
                         else
-                        {
                             response = null;
-                        }
                     }
                 }
                 else

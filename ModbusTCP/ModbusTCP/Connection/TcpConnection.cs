@@ -27,29 +27,31 @@ namespace ModbusTCP
         {
             try
             {
-                if (tcpClient.Connected)
+                if (tcpClient==null)
                 {
                     networkStream = null;
-                    tcpClient.Close();
                 }
 
                 tcpClient = new TcpClient();
                 tcpClient.Connect(ipAddressServer, portNumber);
 
-                tcpClient.ReceiveTimeout = 2500;
-                tcpClient.SendTimeout = 1000;
-
                 if (tcpClient.Connected)
                 {
                     networkStream = tcpClient.GetStream();
-                    //Velocidade de transferência de dados = 9600 bits/s
-                    //Considere a requisição exemplificada = 8 bytes
-                    // Tempo = 1*8/(9600/8) => 6,66ms
-                    //Para 30 bytes (pior caso) => 25ms * 3,5 => 87,5ms
-                    //Tempo de leitura = 3,5 * 87,5 => 306,5ms 
 
-                    networkStream.WriteTimeout = 1000;
-                    networkStream.ReadTimeout = 2500;
+
+                    /**
+                     * Suponhamos uma transmissão de um vetor máximo de 60 bytes
+                     * Velocidade de transmissão em bytes => (9600 / 8) => 1200 bytes/s
+                     * Tempo para envio de 30 bytes => 60/1200 => 50ms
+                     * Tempo de transmissão entre um quadro e outro = 3,5x
+                     * Tempo da requisição => 3*25 => 175ms
+                     **/
+                    networkStream.WriteTimeout = 2500;
+
+                    //2x o valor do tempo de escrita (Recomendado é que seja de 3,5x)
+                    networkStream.ReadTimeout = 6000;
+
 
                     return tcpClient.Connected;
                 }
@@ -66,12 +68,15 @@ namespace ModbusTCP
 
         public bool StatusConnection()
         {
-            if (tcpClient != null)
-            {
-                return tcpClient.Connected;
-            }
+            if (tcpClient == null)
+                return false;
 
-            return false;
+            if (tcpClient.Connected)
+            {
+                if (networkStream == null)
+                    networkStream = tcpClient.GetStream();
+            }
+            return tcpClient.Connected;
         }
 
 
@@ -98,6 +103,7 @@ namespace ModbusTCP
                 {
                     if (networkStream.CanWrite)
                     {
+                        networkStream.Flush();
                         networkStream.Write(buffer, 0, sizeBufferExpected);
                         return ReadByte(sizeBufferExpected);
                     }
